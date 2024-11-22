@@ -313,3 +313,97 @@ WHERE Statistic.gender = 0 AND wardId = 'E05002003'
 ```
 
 #### Harder Questions
+
+##### Elections
+ - How many votes were cast in all of Bristol in the 2014 elections?
+ ```
+ SELECT SUM(Votes) FROM Candidate
+ ```
+
+ - How many votes were cast in the 'Windmill Hill' ward and what percentage of the electorate in this ward does this represent? Your statement should produce a table with one row and two columns called 'votes' and 'percentage'.
+ ```
+ SELECT SUM(Votes) AS votes, SUM(votes)/electorate * 100 AS percentage
+ FROM Candidate
+ JOIN Ward on Candidate.ward = Ward.id
+ WHERE Ward.name = "Windmill Hill"
+ ```
+ - List the names, parties and percentage of votes obtained for all candidates in the Southville ward. Order the candidates by percentage of votes obtained descending.
+ ```
+ SELECT Candidate.name AS name, 
+ Party.name As Party, 
+ votes/(SELECT SUM(votes) 
+    FROM Candidate 
+    JOIN Ward ON Candidate.ward = Ward.id 
+    WHERE Ward.name = "Southville") 
+    * 100 AS percentage FROM Candidate
+ JOIN Ward ON Candidate.ward = Ward.id 
+ JOIN Party ON Candidate.party = Party.id
+ WHERE Ward.name = "Southville"
+ ORDER BY votes DESC
+ ```
+
+ - How successful (in % of votes cast) was the Conservative party in each ward?
+ ```
+ SELECT Ward.name AS ward, 
+ votes/(
+    SELECT SUM(votes)
+    FROM Candidate
+    WHERE ward = Ward.id
+ )
+ * 100 AS percentage
+ FROM Candidate
+ JOIN Ward ON Candidate.ward = Ward.id
+ JOIN Party ON Candidate.party = Party.id
+ WHERE Party.name = "Conservative"
+ ```
+
+ - Which rank did Labour end up in the 'Whitchurch Park' ward? Your statement should produce a table with a single row and column containing the answer as a number. You can assume no ties.
+ ```
+ WITH r AS (
+    SELECT RANK() OVER (ORDER BY votes DESC) AS Rank, 
+    Party.name as P 
+    FROM Candidate
+    JOIN Party ON Candidate.party = Party.id
+    JOIN Ward ON Candidate.ward = Ward.id
+    AND Ward.name = "Whitchurch Park")
+ SELECT r.Rank
+ FROM r
+ WHERE r.p = "Labour"
+ ```
+
+ - What is the total number of votes that each party got in the elections? Your result should be a table with two columns party, votes.
+```
+SELECT Party.name AS party, SUM(votes) AS votes
+FROM Candidate
+JOIN Party ON Party.id = Candidate.Party
+GROUP BY Party.name
+```
+
+ - Find all wards where the Green party beat Labour and create a table with two columns ward, difference where the difference column is the number of Green votes minus the number of Labour votes. Your table should be ordered by difference, with the highest one first.
+ ```
+ WITH Labour AS (
+    SELECT Candidate.votes AS votes, Ward.name AS name
+    FROM Candidate
+    JOIN Party ON Candidate.party = Party.id
+    JOIN Ward ON Candidate.ward = Ward.id
+    WHERE Party.name = "Labour"
+ ), 
+ Green AS (
+    SELECT Candidate.votes AS votes, Ward.name AS name
+    FROM Candidate 
+    JOIN Party ON Candidate.party = Party.id 
+    JOIN Ward ON Candidate.ward = Ward.id
+    WHERE Party.name = "Green
+ )
+ SELECT Ward.name AS ward, 
+ (Green.votes - Labour.votes) AS difference 
+ FROM Ward
+ JOIN Green ON Green.name = Ward.name
+ JOIN Labour ON Labour.name = Ward.name
+ WHERE Green.votes > Labour.votes
+ ORDER BY difference DESC
+ ```
+
+##### Census
+
+
