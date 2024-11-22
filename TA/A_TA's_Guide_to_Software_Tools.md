@@ -406,4 +406,95 @@ GROUP BY Party.name
 
 ##### Census
 
+ - How many women work in sales and customer service occupations and live in the Cabot ward of Bristol?
+ ```
+ SELECT Statistic.data
+ FROM Statistic
+ JOIN Occupation ON Statistic.occId = Occupation.id
+ WHERE wardId = "E05001979" AND gender = 1 AND Occupation.name = "sales and customer service occupations"
+ ```
 
+ - How many people work in sales and customer service occupations and live in the Cabot ward of Bristol?
+ ```
+ SELECT SUM(Statistic.data)
+ FROM Statistic 
+ JOIN Occupation ON Statistic.occId = Occupation.Id
+ WHERE wardId = "E05001979" AND Occupation.name = "sales and customer service operations"
+ ```
+
+ - How many people work in caring, leisure and other service occupations in all of the City of Bristol CLU?
+ ```
+ SELECT SUM(Statistic.data)
+ FROM Statistic
+ JOIN Ward ON Statistic.wardId = Ward.code
+ WHERE occId = 6 AND Ward.parent = "E06000023"
+ ```
+
+ - In the Cabot ward, produce a table listing the names of the 9 occupation classes and the number of people in each of the classes in this ward.
+ ```
+ SELECT Occupation.name AS occupation, 
+ SUM(Statistic.data) AS total
+ FROM Statistic
+ JOIN Occupation ON Statistic.occId = Occupation.id
+ WHERE Statistic.wardId = "E05001979"
+ GROUP BY Occupation.name
+ ```
+
+ - Find the working population, ward name and CLU name for the smallest ward (by working population) in the 2011 census.
+ ```
+ SELECT Ward.name AS ward, 
+ SUM(Statistic.data) AS workingPop, 
+ County.name AS CLU, 
+ FROM Statistic
+ JOIN Ward ON Statistic.wardId = Ward.code
+ JOIN County ON Ward.parent = County.code 
+ GROUP BY Ward.name
+ ORDER BY SUM(Statistic.data) ASC
+ LIMIT 1
+ ```
+
+ - The same as the last question, but now produce a table with two rows, one for the smallest and one for the largest ward. There's no quicker way than repeating the last query twice, the question is how to stick the two "copies" together.
+ ```
+ (SELECT Ward.name AS ward, 
+ SUM(Statistic.data) AS workingPop, 
+ County.name AS CLU
+ FROM Statistic 
+ JOIN Ward ON Statistic.wardId = Ward.code
+ JOIN County ON Ward.parent = County.code
+ GROUP BY Statistic.wardId
+ ORDER BY SUM(Statistic.data) ASC
+ LIMIT 1
+ )
+ UNION
+ (SELECT Ward.name AS ward, 
+ SUM(Statistic.data) AS workingPop, 
+ County.name AS CLU
+ FROM Statistic
+ JOIN Ward ON Statistic.wardId = Ward.code 
+ JOIN County ON Ward.parent = County.code
+ GROUP BY Statistic.wardId
+ ORDER BY SUM(Statistic.data) DESC 
+ LIMIT 1
+ )
+ ```
+
+ - Find the average size of a ward's working population in the London region.
+ ```
+ SELECT AVG(Statistic.data) AS average
+ FROM Statistic
+ JOIN Ward ON Statistic.wardId = Ward.code
+ JOIN County ON Ward.parent = County.code
+ JOIN Region ON County.parent = Region.code
+ WHERE Region.code = "E12000007"
+ ```
+
+ - The same as the last question but now for every region—your query should produce a table with one row per region.
+ ```
+ SELECT AVG(Statistic.data) AS average, 
+ Region.name AS Region 
+ FROM Statistic
+ JOIN Ward ON Statistic.wardId = Ward.code
+ JOIN County ON Ward.parent = County.code
+ JOIN Region ON County.parent = Region.code
+ GROUP BY Region.code
+ ```
