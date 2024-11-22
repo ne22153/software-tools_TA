@@ -240,3 +240,76 @@ CREATE TABLE IF NOT EXISTS Committee(
     FOREIGN KEY (Member) REFERENCES Members(Email)
 );
 ```
+
+#### Easier questions
+
+##### Elections
+
+ - List the names of all parties that stood in the election, ordered alphabetically by name.
+ ```
+ SELECT Party.name FROM Party
+ ORDER BY Party.name
+ ```
+
+ - List the names of all parties that stood in the Bedminster ward.
+ ```
+ SELECT Party.name FROM Candidate
+ INNER JOIN Party on Candidate.party = Party.id
+ INNER JOIN Ward on Candidate. ward = Ward.id 
+ WHERE Ward.name = Bedminster
+ ```
+
+ - How many votes did Labour get in the Stockwood ward?
+ ``` 
+ SELECT Votes FROM Candidate
+ INNER JOIN Party ON Candidate.party = Party.id
+ INNER JOIN Ward on Candidate. ward = Ward.id 
+ WHERE Party.name = 'Labour' AND Ward.name = 'Stockwood'
+ ```
+
+ - List the names, parties and number of votes obtained for all candidates in the Southville ward. Order the candidates by number of votes obtained descending (winner comes first).
+```
+SELECT Candidate.name, Party.name, Candidate.votes FROM Candidate
+JOIN Party ON Candidate.party = Party.id
+JOIN Ward ON Candidate.ward = Ward.id
+WHERE Ward.name = 'Southville'
+ORDER BY Votes DESC
+```
+
+ - List the name, party and number of votes obtained for the winner only in the Knowle ward.
+ ```
+SELECT Candidate.name, Party.name, Candidate.votes FROM Candidate
+JOIN Party ON Candidate.party = Party.id
+JOIN Ward ON Candidate.ward = Ward.id
+WHERE Ward.name = 'Knowle'
+ORDER BY Votes DESC
+LIMIT 1
+```
+
+##### Census 
+ - The university of Bristol is situated in the Cabot ward (ward names are not always distinct, but this one is). Find the names and codes of the CLU, region and country containing the Cabot ward (CLU = county level unit = "row in County table").
+
+```
+SELECT County.name, County.code, Region.name, Country.name
+FROM County 
+INNER JOIN Country ON County.Country = Country.code
+INNER JOIN Region ON County.parent = Region.code
+INNER JOIN Ward ON County.code = Ward.parent
+WHERE Ward.anem = 'Cabot'
+```
+
+ - Find the number of women managers in the Cabot ward.
+ ```
+ SELECT Data
+ FROM Statistic
+ WHERE Statistic.occId = 1 AND gender = 1 AND wardId = 'E05001979'
+ ```
+ - For the Stoke Bishop ward, list the 9 occupation class names and the number of men in each occupation. Your table should have two columns called name and number.
+```
+SELECT Occupation.name AS name, Statistic.data AS number
+FROM Statistic 
+JOIN Occupation ON Statistic.occId = Occupation.id
+WHERE Statistic.gender = 0 AND wardId = 'E05002003'
+```
+
+#### Harder Questions
