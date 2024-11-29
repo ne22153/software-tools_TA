@@ -1,5 +1,5 @@
 ##  A TA's Guide to Software Tools (well kinda)
-(last updated 22/11/24)
+(last updated 29/11/24)
 
 So, you reckon you can be a TA for Software Tools, eh? ~~well think again!~~
 
@@ -499,4 +499,11 @@ GROUP BY Party.name
  GROUP BY Region.code
  ```
 
- 
+ ### Week 10 Datalog 
+
+ Random issues from this week:
+ - The AbcDatalog interpreter doesn't support the OR operator syntax, so if you want to make an OR rule, you need to define 2 rules with the same name and paramters with the different components of the rule. 
+ - The parameters of the datalog rules must be:
+ - - lower case
+ - - no strings
+
