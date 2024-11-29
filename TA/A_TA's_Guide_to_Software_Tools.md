@@ -255,15 +255,15 @@ CREATE TABLE IF NOT EXISTS Committee(
  ```
  SELECT Party.name FROM Candidate
  INNER JOIN Party on Candidate.party = Party.id
- INNER JOIN Ward on Candidate. ward = Ward.id 
- WHERE Ward.name = Bedminster
+ INNER JOIN Ward on Candidate.ward = Ward.id 
+ WHERE Ward.name = 'Bedminster'
  ```
 
  - How many votes did Labour get in the Stockwood ward?
  ``` 
  SELECT Votes FROM Candidate
  INNER JOIN Party ON Candidate.party = Party.id
- INNER JOIN Ward on Candidate. ward = Ward.id 
+ INNER JOIN Ward on Candidate.ward = Ward.id 
  WHERE Party.name = 'Labour' AND Ward.name = 'Stockwood'
  ```
 
@@ -295,7 +295,7 @@ FROM County
 INNER JOIN Country ON County.Country = Country.code
 INNER JOIN Region ON County.parent = Region.code
 INNER JOIN Ward ON County.code = Ward.parent
-WHERE Ward.anem = 'Cabot'
+WHERE Ward.name = 'Cabot'
 ```
 
  - Find the number of women managers in the Cabot ward.
