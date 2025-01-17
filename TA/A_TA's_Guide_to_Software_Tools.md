@@ -1,5 +1,5 @@
 ##  A TA's Guide to Software Tools (well kinda)
-(last updated 29/11/24)
+(last updated 17/01/25)
 
 So, you reckon you can be a TA for Software Tools, eh? ~~well think again!~~
 
@@ -521,6 +521,8 @@ config.vm.network "forwarded_port", guest: 8000, host: 8000
 ```
 
 in their Vagrantfile.
+
+Note that running wget on the `http-response` gives the wrong content. It results in the html version of the github page, NOT the contents of the file.
 
 #### Research Exercises
 
