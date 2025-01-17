@@ -507,3 +507,41 @@ GROUP BY Party.name
  - - lower case
  - - no strings
 
+### Part 2
+### Week 11 - HTTP
+
+This week's lab involves running a basic client-server system across 2 terminals
+
+#### Exploring HTTP
+
+A source of issues may be due to vagrant, as you need to make sure that the student has the line:
+
+```
+config.vm.network "forwarded_port", guest: 8000, host: 8000
+```
+
+in their Vagrantfile.
+
+#### Research Exercises
+
+ - The fragment part of a URL is an internal page reference which refers to a section within a web page. It usually appears at the end of a URL and begins with a #
+ - The Accept header in HTTP defines the media types that the client can accept from the server
+ - A User-Agent is a software agent used for retrieving web content and facilitating end-user interaction. 
+ - Spaces in a URL are replaces with '%20' or '+'. Other characters which need encoding are: ':', '/', '?', '#', '[', ']', '@', '!'
+ - The University website uses Apache for their server
+
+#### A server in Java
+
+This section goes through the basic structure of a spring boot API
+
+To do the exercise for this section, you need the following code in Controller.java:
+
+```
+ @GetMapping("/bad")
+    public ResponseEntity<String> badPage() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, "text/plain");
+
+        return new ResponseEntity<String>("Bad request, try again", headers, 404);
+    }
+```
