@@ -547,3 +547,218 @@ To do the exercise for this section, you need the following code in Controller.j
         return new ResponseEntity<String>("Bad request, try again", headers, 404);
     }
 ```
+
+### Week 12 - html
+
+#### Basic html5
+
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>COMS10012 Software Tools</title>
+    </head>
+    <body>
+        <h1>COMS10012 Software Tools</h1>
+        <p>
+            <strong>This unit teaches you the basics of web development.</strong>
+        </p>
+        <h2>Content</h2>
+        <p>
+            Content is a combination of video lectures and reading assignments from the <em>Mozilla Developer Network</em>.
+        </p>
+        <p>
+            You can find the unit page <a href="cs-uob.github.io/COMS10012">on github</a>.
+        </p>
+        <h2>Learning Outcomes</h2>
+        <p>
+            After completing this unit, you will be able to use the following:
+        </p>
+        <ul>
+            <li>HTML5</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+        </ul>
+    </body>
+</html>
+```
+
+#### Templating
+
+Basic exercise:
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>List of Units</title>
+    </head>
+    <body>
+        <h1>Table of units</h1>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Unit title</th>
+                <th>Link</th>
+            </tr>
+            <tr th:each="unit : ${units}">
+                <td th:text="${unit.code}"></td>
+                <td th:text="${unit.title}"></td>
+                <td th:href="'/unit/' + ${unit.code}" th:text="details"></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
+Intermediate Exercise 1: 
+
+Make sure that the updated version of Controller.java imports the Student model file
+
+In Controller.java, add:
+```
+@GetMapping("/students")
+    public String studentsPage() {
+        Database d = new DatabaseImpl();
+        List<Student> students = d.getStudents();
+        Context cx = new Context();
+        cx.setVariable("students", students);
+        return templates.render("students.html", cx);
+    }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<String> 
+    StudentDetailPage(@PathVariable String id) {
+        Database d = new DatabaseImpl();
+        Student u = null;
+        int idInteger = Integer.parseInt(id);
+        for (Student uu : d.getStudents()) {
+            if (uu.getId() == idInteger) {
+                u = uu;
+                break;
+            }
+        }
+        
+        if (u == null) {
+            return ResponseEntity
+                .status(404)
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain")
+                .body("No student with id " + id);
+        }
+        
+        Context cx = new Context();
+        cx.setVariable("student", u);
+        return ResponseEntity
+            .status(200)
+            .header(HttpHeaders.CONTENT_TYPE, "text/html")
+            .body(templates.render("student.html", cx));
+    }
+```
+
+students.html should be created in the templates folder:
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>List of Students</title>
+    </head>
+    <body>
+        <h1>Table of students</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+            </tr>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}"></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
+student.html should also be created in the templates folder:
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Student details</title>
+    </head>
+    <body>
+        <h1>Student details</h1>
+        <p><strong>Student name:</strong> <span th:text="${student.name}"></span></p>
+        <p><strong>Student id:</strong> <span th:text="${student.id}"></span></p>
+    </body>
+</html>
+```
+
+Intermediate Exercise 2: 
+
+student.html:
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Student details</title>
+    </head>
+    <body>
+        <h1>Student details</h1>
+        <p><strong>Student name:</strong> <span th:text="${student.name}"></span></p>
+        <p><strong>Student id:</strong> <span th:text="${student.id}"></span></p>
+
+        <h1>Table of units</h1>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Unit title</th>
+                <th>Grade</th>
+            </tr>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.getFirst().code}"></td>
+                <td th:text="${result.getFirst().title}"></td>
+                <td th:text="${result.getSecond()}"></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
+change Controller.java to return the results in the Context object:
+```
+@GetMapping("/students/{id}")
+    public ResponseEntity<String> 
+    StudentDetailPage(@PathVariable String id) {
+        Database d = new DatabaseImpl();
+        Student u = null;
+        List<Pair<Unit, Integer>> results = null;
+        int idInteger = Integer.parseInt(id);
+        for (Student uu : d.getStudents()) {
+            if (uu.getId() == idInteger) {
+                u = uu;
+                results = u.getGrades();
+                break;
+            }
+        }
+        
+        if (u == null) {
+            return ResponseEntity
+                .status(404)
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain")
+                .body("No student with id " + id);
+        }
+
+
+        Context cx = new Context();
+        cx.setVariable("student", u);
+        cx.setVariable("results", results);
+        return ResponseEntity
+            .status(200)
+            .header(HttpHeaders.CONTENT_TYPE, "text/html")
+            .body(templates.render("student.html", cx));
+    }
+```

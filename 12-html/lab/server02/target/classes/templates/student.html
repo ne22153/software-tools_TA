@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Student details</title>
+    </head>
+    <body>
+        <h1>Student details</h1>
+        <p><strong>Student name:</strong> <span th:text="${student.name}"></span></p>
+        <p><strong>Student id:</strong> <span th:text="${student.id}"></span></p>
+
+        <h1>Table of units</h1>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Unit title</th>
+                <th>Grade</th>
+            </tr>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.getFirst().code}"></td>
+                <td th:text="${result.getFirst().title}"></td>
+                <td th:text="${result.getSecond()}"></td>
+            </tr>
+        </table>
+    </body>
+</html>

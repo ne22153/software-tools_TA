@@ -10,9 +10,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.thymeleaf.context.Context;
 import softwaretools.server02.model.Database;
+import softwaretools.server02.model.Pair;
 import softwaretools.server02.model.Unit;
+import softwaretools.server02.model.Student;
 import softwaretools.server02.model.internal.DatabaseImpl;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class Controller {
@@ -66,5 +68,46 @@ public class Controller {
             .status(200)
             .header(HttpHeaders.CONTENT_TYPE, "text/html")
             .body(templates.render("unit.html", cx));
+    }
+
+    @GetMapping("/students")
+    public String studentsPage() {
+        Database d = new DatabaseImpl();
+        List<Student> students = d.getStudents();
+        Context cx = new Context();
+        cx.setVariable("students", students);
+        return templates.render("students.html", cx);
+    }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<String> 
+    StudentDetailPage(@PathVariable String id) {
+        Database d = new DatabaseImpl();
+        Student u = null;
+        List<Pair<Unit, Integer>> results = null;
+        int idInteger = Integer.parseInt(id);
+        for (Student uu : d.getStudents()) {
+            if (uu.getId() == idInteger) {
+                u = uu;
+                results = u.getGrades();
+                break;
+            }
+        }
+        
+        if (u == null) {
+            return ResponseEntity
+                .status(404)
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain")
+                .body("No student with id " + id);
+        }
+
+
+        Context cx = new Context();
+        cx.setVariable("student", u);
+        cx.setVariable("results", results);
+        return ResponseEntity
+            .status(200)
+            .header(HttpHeaders.CONTENT_TYPE, "text/html")
+            .body(templates.render("student.html", cx));
     }
 }
