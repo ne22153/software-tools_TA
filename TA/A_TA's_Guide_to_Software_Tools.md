@@ -1,5 +1,5 @@
 ##  A TA's Guide to Software Tools (well kinda)
-(last updated 17/01/25)
+(last updated 30/01/25)
 
 So, you reckon you can be a TA for Software Tools, eh? ~~well think again!~~
 
@@ -762,3 +762,157 @@ change Controller.java to return the results in the Context object:
             .body(templates.render("student.html", cx));
     }
 ```
+
+### Week 13 & 14 - CSS
+
+#### Styling Text
+
+To fit the baseline image background, reset.css:
+
+```
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+h1{
+    font-weight: bold;
+	font-size: 1.5rem;
+	padding-top: 10px;
+	padding-bottom: 10px;
+    max-width: 40em;
+    background-color: rgba(0, 0, 255, 0.25);
+    font-family: "Calibri";
+}
+h2{
+    font-weight: bold;
+	font-size: 1.5rem;
+	margin: 0 auto;
+    max-width: 40em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(0, 0, 255, 0.25);
+    font-family: "Calibri";
+}
+body {
+    background-image: url("baseline.png");
+    line-height: 125%;
+    margin: 0 auto;
+    max-width: 40em;
+    font-family: "Calibri";
+}
+ul {
+    padding-left: 2em; /* the bullets appear in the padding */
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
+```
+
+#### Using a CSS Framework
+
+Page2.html endstate:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>CSS example</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.css">
+
+    </head>
+    <body>
+        <header class="hero">
+            <div class="hero-body">
+                <h1 class="title is-2">CSS conference booking page</h1>
+            </div>
+        </header>
+        <main class="content">
+            <div class="container">
+                <section class="section">
+                    <h2>CSS conference</h2>
+                    <p>CSS conference is a place where you can learn all about modern web design with CSS. You will learn all about responsive design, frameworks, tips and tricks and practical examples from the designers of real websites.</p>
+
+                    <h2>Registration Form</h2>
+                    <form method="POST">
+                        <label for="name">Name:</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" id="name" name="name" required />
+                        </div>
+                        <label for="surname">Surname:</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" id="surname" name="surname" required />
+                        </div>
+                        <label for="email">E-mail:</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" id="email" name="email" required />
+                        </div>
+                        <!--<input type="submit" value="Register" />-->
+                        <div class="control">
+                            <button class="button is-primary">Register</button>
+                        </div>
+                    </form>
+                    <article class="message is-primary">
+                        <div class="message-header">
+                            <p>This is the one I made</p>
+                            <button class="delete" aria-label="delete"></button>
+                        </div>
+                        <div class="message-body">
+                            Out of the 2 sites open, I helped make <strong> this one</strong>
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>
+```
+
+

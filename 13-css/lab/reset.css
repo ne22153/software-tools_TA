@@ -27,6 +27,8 @@ time, mark, audio, video {
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
+	font-weight: bold;
+	font-size: 1.5rem;
 }
 body {
 	line-height: 1;
@@ -46,3 +48,35 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+h1{
+    font-weight: bold;
+	font-size: 1.5rem;
+	padding-top: 10px;
+	padding-bottom: 10px;
+    max-width: 40em;
+    background-color: rgba(0, 0, 255, 0.25);
+    font-family: "Calibri";
+}
+h2{
+    font-weight: bold;
+	font-size: 1.5rem;
+	margin: 0 auto;
+    max-width: 40em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(0, 0, 255, 0.25);
+    font-family: "Calibri";
+}
+body {
+    background-image: url("baseline.png");
+    line-height: 125%;
+    margin: 0 auto;
+    max-width: 40em;
+    font-family: "Calibri";
+}
+ul {
+    padding-left: 2em; /* the bullets appear in the padding */
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
