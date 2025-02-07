@@ -1,7 +1,10 @@
+// creates a new game
 function newGame(document){
     board.innerHTML = "";
+    // unTouched holds all non-mine squares
     unTouched = []
     mines = []
+    // playable will be true for as long as the game isn't over
     playable = true
 
     for (let i = 0; i < 60; i++){
@@ -10,10 +13,9 @@ function newGame(document){
         else {unTouched.push(i)}
         makeButton(document, i, board);
     }
-    console.log(mines)
-    console.log(unTouched)
 }
 
+// makes a button and adds it to the board
 function makeButton(document, num, board){
     const newDiv = document.createElement("div");
     newDiv.addEventListener("click", function(){touchTile(num)})
@@ -21,14 +23,15 @@ function makeButton(document, num, board){
     board.appendChild(newDiv);
 }
 
+// 'clicks' a tile, activating relevant consequences
 function touchTile(tile){
     if (!playable){ return }
 
-
     let element = document.getElementById(`title_${tile}`)
-    // unTouched.splice(unTouched.indexOf(tile), 1);
+    
     unTouched = unTouched.filter( x => x != tile);
-    // console.log("found, "+tile)
+    
+    // if the tile is a bomb, the game ends
     if (mines.includes(tile)){
         console.log("found bomb")
         element.className = "bomb";
@@ -42,12 +45,12 @@ function touchTile(tile){
     if (mineNeighbours(tile) > 0){
         element.textContent = mineNeighbours(tile)
     } 
+    // if the tile has no mine neighbours, then it should reveal all nearby white space
     else {
         let neighbours = findNeighbours(tile)
         neighbours = neighbours.filter(x => unTouched.includes(x))
-        console.log("UnTouched neighbours: "+neighbours)
+        
         for (let i = 0; i < neighbours.length; i++){
-                // setTimeout(() => touchTile(neighbours[i]), 0)
             touchTile(neighbours[i])
         }
     }
@@ -61,6 +64,7 @@ function touchTile(tile){
     }
 }
 
+// returns all squares which touch the given tile
 function findNeighbours(tile){
     let neighbours = [
         tile-21, tile-20, tile-19, 
@@ -81,17 +85,18 @@ function findNeighbours(tile){
         remove.push(tile-21, tile-1, tile+19)
     }
     neighbours = neighbours.filter(x => !remove.includes(x))
-    //console.log("Neighbours of "+tile+" are "+neighbours)
+    
     return neighbours
 }
 
+// returns the number of neighbours which are mines
 function mineNeighbours(tile){
     let neighbours = findNeighbours(tile)
     let count = 0;
     for (let i = 0; i < neighbours.length; i++){
         if (mines.includes(neighbours[i])){count++}
     }
-    console.log(count)
+    
     return count;
 }
 
