@@ -915,4 +915,203 @@ Page2.html endstate:
 </html>
 ```
 
+#### Curriculum
+
+curriculum.css:
+```
+body {
+    font-family: sans-serif;
+    background-color: rgba(112, 145, 53, 0.1);
+}
+
+.unit {
+    background-color: rgba(0, 67, 79, 0.2);
+}
+
+.unit b {
+    display: block;
+    background-color: rgb(0, 67, 79);
+    color: white;
+    padding: 5px;
+}
+
+.unit p {
+    padding: 5px;
+}
+
+main{
+    max-width: 1500px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.cp10{
+    grid-column: span 2;
+}
+
+.cp15{
+    grid-column: span 3;
+}
+
+.cp20{
+    grid-column: span 4;
+}
+
+.cp40{
+    grid-column: span 8;
+}
+
+.y2-tb4{
+    grid-row: 3 / span 2;
+    grid-column: 11 / span 2;
+}
+```
+
+#### Trees / Responsive Layout
+
+Tree.css:
+```
+@media (min-width: 600px){
+    .container{
+        max-width: 960px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        justify-content: center;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .featured{
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 600px){
+    .container{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 10px;
+        padding-right: 10px;
+        justify-content: center;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .featured{
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+
+body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #04443c;
+    color: white;
+    margin: 0;
+    padding: 10px;
+    padding-left: 50px;
+}
+
+.card {
+    background-color: #167f5f;
+    color: white;
+}
+
+.card-image {
+    max-width: 100%;
+    margin: 0 auto;
+    height: auto;
+}
+
+.card span.latin-name {
+    display: block;
+    font-style: italic;
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+.card span.common-name {
+    display: block;
+    padding: 10px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+```
+
+### Week 15
+
+#### Command Line
+
+BMI:
+```
+function bmi(weight, height){
+    bmi_val = weight / (height * height)
+    bmi_num = Math.round(bmi_val)
+    if (bmi_num < 18.5){return "Underweight"}
+    else if (bmi_num < 24.9){return "Normal"}
+    else if (bmi_num < 29.9){return "Overweight"}
+    else if (bmi_num < 39.9){return "Obese"}
+    else {return "Severely Obese"}
+}
+
+for (let i = 0; i < 100; i++) {
+	console.log(i + bmi(i, 1));
+}
+```
+
+Fizzbuzz:
+```
+function fizzbuzz(num){
+    return_string = "";
+    if (num % 3 == 0){return_string = return_string.concat('', "fizz")}
+    if (num % 5 == 0){return_string = return_string.concat('', 'buzz')}
+    if (return_string == ""){return num}
+    return return_string;
+}
+
+for (let i = 1; i < 16; i++) {
+	console.log(fizzbuzz(i));
+}
+```
+
+Signify:
+```
+function signify(text, prob){
+    text_list = text.split(" ");
+    for (let i = 0; i < text_list.length; i++){
+        random = Math.random()
+        if (random <= prob){
+            text_list[i] = text_list[i].charAt(0).toUpperCase() + text_list[i].slice(1)
+        }
+    }
+    return text_list.join(" ");
+}
+```
+
 
