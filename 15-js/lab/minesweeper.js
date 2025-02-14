@@ -55,7 +55,7 @@ function touchTile(tile){
         }
     }
 
-    if (unTouched.length == 0 && playable){
+    if (unTouched.length === 0 && playable){
         let alert = document.createElement("div")
         alert.textContent = "You win!";
         let body = document.querySelector("#message");
@@ -75,13 +75,13 @@ function findNeighbours(tile){
     if (tile < 20){
         remove.push(tile-21, tile-20, tile-19)
     }
-    if (tile % 20 == 19){
+    if (tile % 20 === 19){
         remove.push(tile-19, tile+1, tile+21)
     }
     if (tile >= 390){
         remove.push(tile+19, tile+20, tile+21)
     }
-    if (tile % 20 == 0){
+    if (tile % 20 === 0){
         remove.push(tile-21, tile-1, tile+19)
     }
     neighbours = neighbours.filter(x => !remove.includes(x))
