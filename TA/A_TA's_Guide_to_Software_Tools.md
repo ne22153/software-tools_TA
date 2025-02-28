@@ -1315,6 +1315,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     })
 
 })
+
+let dictform = document.querySelector("#dictform")
+    dictform.addEventListener("keydown", function (event){
+        if (event.key === "Enter"){
+            console.log(console.log("Hallo"))
+            event.preventDefault()
+            fetch('cgi-bin/whatmeans?term='+document.querySelector('#dictbox').value)
+                .then(response => response.text())
+                //.then(data => console.log(data))
+                .then(data => document.querySelector('#resultbox').innerHTML = data)
+                .then(console.log("Hello"))
+
+        }
+    })
 ```
 
 

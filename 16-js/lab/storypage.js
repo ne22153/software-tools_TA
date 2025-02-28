@@ -79,12 +79,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     })
 
     // unfinished python caller, issues due to browser side running restrictions
-    /*let dictform = document.querySelector("#dictform")
+    let dictform = document.querySelector("#dictform")
     dictform.addEventListener("keydown", function (event){
         if (event.key === "Enter"){
+            console.log(console.log("Hallo"))
             event.preventDefault()
-            fetch('http://localhost:8000/lab/cgi-bin/whatmeans').then(response => response.text()).then(data => console.log(data))
+            fetch('cgi-bin/whatmeans?term='+document.querySelector('#dictbox').value)
+                .then(response => response.text())
+                //.then(data => console.log(data))
+                .then(data => document.querySelector('#resultbox').innerHTML = data)
+                .then(console.log("Hello"))
+
         }
-    })*/
+    })
 })
 
