@@ -1328,4 +1328,42 @@ let dictform = document.querySelector("#dictform")
     })
 ```
 
+### Week 17 - Webscraping
 
+#### Crawl
+
+Solutions:
+1. `-i` : read URLs from a local or external file
+    If `--force-html` is present, the document is regarded as HTML, and relative links may not work
+    `--spider` : the pages are not download, it just checks if they are present
+2. The tag `--user-agent=USER_AGENT` allows custom user agents
+3. `-p` makes wget download all the files that are necessary to properly display a page; including inlined images, sounds and stylesheets
+    `-r -l` makes wget download all linked pages, but not their requisites
+4. `--domains` accepts a list of domains to be followed
+5. `-nc` stops the same file being downloaded multiple times, however it only keeps the older version of the file, which may be annoying if the site changes between wgets
+
+#### BeautifulSoup
+
+##### Interacting with Soup
+
+Solutions:
+3. ```
+    soup = BeautifulSoup(FILE, FEATURES)
+    containers = soup.find_all('div', {'class':'container'})
+    ```
+
+##### A Scraping Script
+
+```
+from bs4 import BeautifulSoup
+import os
+
+leaves = {}
+for file in os.listdir('cattax'):
+  if file[-4:] == 'html':
+    soup = BeautifulSoup(open('cattax/'+file,'r'), features='html.parser')
+    print(soup.title.text + " : " + soup.h1.text)
+    infoBlocks = soup.find_all(attrs='info')
+    if soup.find_all(attrs='container') == []:
+       leaves[soup.title.text] = infoBlocks
+```
