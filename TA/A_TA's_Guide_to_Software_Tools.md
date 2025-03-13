@@ -1367,3 +1367,49 @@ for file in os.listdir('cattax'):
     if soup.find_all(attrs='container') == []:
        leaves[soup.title.text] = infoBlocks
 ```
+
+### Week 18 - PGP
+
+This week's lab doesn't state the exact commands to be ran by students sometimes, so I'm providing a list of useful ones:
+
+To generate a PGP Key:
+```
+gpg --full-generate-key
+```
+
+To encrypt a message:
+```
+gpg --encrypt --recipient 'RECIPIENT_EMAIL' ~/path/to/message.txt
+```
+or to encrypt but have the resulting file in base64 rather than binary:
+```
+gpg --armor --encrypt  --recipient 'RECIPIENT_EMAIL' ~/path/to/message.txt
+```
+
+When sending the key to a keyserver, it may fail as the default keyserver on the lab machines does not work. To fix this, run this command in it's place:
+```
+gpg --keyserver keyserver.ubuntu.com --send-keys 'KEY_ID'
+```
+(Note that if this is the case, all searches will also need to specify the correct keyserver)
+
+To decrypt a message:
+```
+gpg --decrypt ~/path/to/message.txt.asc
+```
+
+To sign a key:
+```
+gpg --sign-key 'PRIMARY_KEY_FINGERPRINT'
+```
+Or send your signature on the recipient's key back to the keyserver:
+```
+gpg --send-key 'PRIMARY_KEY_FINGERPRINT'
+```
+
+To sign a message with your private key:
+```
+gpg --output message.sig --clearsign message.txt
+gpg --output message.gpg --armor --encrypt --recipient 'RECIPIENT_EMAIL'
+```
+
+
